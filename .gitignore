@@ -1,2 +1,5 @@
-node_modules
+# example .gitignore
+node_modules/
+dist/
 .env
+.vscode/
