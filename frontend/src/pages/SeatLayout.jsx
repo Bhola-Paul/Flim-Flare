@@ -6,6 +6,7 @@ import { ArrowRightIcon, ClockIcon } from 'lucide-react';
 import isoTimeFormat from '../lib/isoTimeFormat';
 import BlurCircle from '../components/BlurCircle';
 import toast from 'react-hot-toast';
+import SplashCursor from '../components/SplashCursor';
 
 function SeatLayout() {
   const groupRows = [["A", "B"], ["C", "D"], ["E", "F"], ["G", "H"], ["I", "J"]]
@@ -34,6 +35,7 @@ function SeatLayout() {
   }
   const renderSeats = (row, count = 9) => (
     <div key={row} className='flex gap-2 mt-2'>
+      <SplashCursor/>
       <div className='flex flex-wrap items-center justify-center gap-2'>
         {Array.from({ length: count }, (_, i) => {
           const seatId = `${row} ${i + 1}`;

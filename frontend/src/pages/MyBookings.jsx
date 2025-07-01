@@ -5,6 +5,7 @@ import BlurCircle from '../components/BlurCircle';
 import timeFormat from '../lib/timeFormat';
 import isoTimeFormat from '../lib/isoTimeFormat';
 import { dateFormat } from '../lib/dateFormat';
+import SplashCursor from '../components/SplashCursor';
 
 function MyBookings() {
   const currency=import.meta.env.VITE_CURRENCY;
@@ -19,6 +20,7 @@ function MyBookings() {
   },[])
   return !isLoading ? (
     <div className='relative px-6 md:px-16 lg:px-40 pt-30 md:pt-40 min-h-[80vh]'>
+      <SplashCursor/>
       <BlurCircle top='100px' left='100px'/>
       <div>
         <BlurCircle bottom='0px' left='600px'/>
