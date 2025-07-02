@@ -12,8 +12,6 @@ function Footer() {
             This is a personal project showcasing a movie booking experience. Inspired by real-world platforms, it demonstrates front-end and back-end integration.
           </p>
           <div className="flex items-center gap-2 mt-4">
-            {/* <img src={assets.googlePlay} alt="google play" className="h-10 w-auto " />
-            <img src={assets.appStore} alt="app store" className="h-10 w-auto" /> */}
             <div className='flex flex-col items-center gap-2'>
                 <img src="/github-mark-white.png" alt="" className='w-9 h-9' />
                 <a href="" className='text-sm text-gray-400 hover:scale-95 transition hover:text-white'>Click Here</a>

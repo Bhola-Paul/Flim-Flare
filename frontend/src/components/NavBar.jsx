@@ -2,8 +2,6 @@ import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets'
 import { BrainIcon, HeartIcon, MenuIcon, SearchIcon, Ticket, TicketPlus, XIcon } from 'lucide-react'
-import BlurCircle from './BlurCircle';
-import LogoutButton from './LogoutButton';
 import { AppContent } from '../context/AppContext';
 import toast from 'react-hot-toast';
 import axios from 'axios';
@@ -12,7 +10,7 @@ function NavBar() {
   const [isOpen,setIsOpen]=useState(false);
   const navigate=useNavigate();
 
-  const {userData,backendUrl,setUserData,setIsLoggedin,loading}=useContext(AppContent);
+  const {userData,backendUrl,setUserData,setIsLoggedin}=useContext(AppContent);
 
   const logout=async () => {
     try {
