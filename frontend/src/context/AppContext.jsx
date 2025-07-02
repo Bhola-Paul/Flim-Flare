@@ -47,7 +47,7 @@ export const AppContextProvider=(props)=>{
         isLoggedin,setIsLoggedin,
         userData,setUserData,
         getUserData,
-        loading,
+        // loading,
     }
     return (
         <AppContent.Provider value={value}>
