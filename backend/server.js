@@ -9,12 +9,16 @@ import userRouter from './routes/user.js';
 
 const app=express();
 const port=3000;
+const allowedOrigins=['http://localhost:5173']
 
 await connectDB();
 
 //middleware
 app.use(express.json());
-app.use(cors({credentials:true}));
+app.use(cors({
+    origin:allowedOrigins,
+    credentials:true,
+}));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 // app.use(clerkMiddleware())

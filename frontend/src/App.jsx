@@ -15,15 +15,21 @@ import AddShow from './pages/Admin/AddShow'
 import ListBookings from './pages/Admin/ListBookings'
 import ListShows from './pages/Admin/ListShows'
 import AiAssitance from './pages/AiAssitance'
+import LoginPage from './pages/LoginPage'
+import ResetPassword from './pages/ResetPassword'
 
 function App() {
   const isAdminRoute = useLocation().pathname.startsWith('/admin');
+  const isLoginRoute=useLocation().pathname.startsWith('/login');
+  const isResetPasswordRoute=useLocation().pathname.startsWith('/reset-password');
   return (
     <>
       <Toaster />
-      {!isAdminRoute && <NavBar />}
+      {!isAdminRoute && !isLoginRoute && !isResetPasswordRoute && <NavBar />}
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/login' element={<LoginPage />} />
+        <Route path='/reset-password' element={<ResetPassword />} />
         <Route path='/movies' element={<Movies />} />
         <Route path='/movies/:id' element={<MovieDetails />} />
         <Route path='/movies/:id/:date' element={<SeatLayout />} />
@@ -37,7 +43,7 @@ function App() {
           <Route path='list-shows' element={<ListShows />} />
         </Route>
       </Routes>
-      {!isAdminRoute && <Footer />}
+      {!isAdminRoute && !isLoginRoute && !isResetPasswordRoute && <Footer />}
     </>
   )
 }

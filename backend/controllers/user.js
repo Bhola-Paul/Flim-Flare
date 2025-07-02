@@ -264,6 +264,8 @@ export const sendResetOtp = async (req, res) => {
 //reset user password
 export const resetPassword = async (req, res) => {
     const { email, otp, newPassword } = req.body;
+    console.log(email,otp,newPassword);
+    
     if (!email || !otp || !newPassword) {
         return res.json({
             success: false,

@@ -5,6 +5,8 @@ import appStore from './appStore.svg'
 import screenImage from './screenImage.svg'
 import profile from './profile.png'
 import flimflare from './flimflare.svg'
+import lock from './lock_icon.svg'
+import catLogo from '../assets/catLogo.svg'
 
 export const assets = {
     logo,
@@ -13,7 +15,9 @@ export const assets = {
     appStore,
     screenImage,
     profile,
-    flimflare
+    flimflare,
+    lock,
+    catLogo
 }
 
 export const dummyTrailers = [
