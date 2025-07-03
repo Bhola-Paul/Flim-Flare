@@ -5,6 +5,8 @@ import connectDB from './configs/db.js';
 // import { clerkMiddleware } from '@clerk/express'
 import  cookieParser from 'cookie-parser'
 import userRouter from './routes/user.js';
+import showRouter from './routes/show.js';
+import bookingRouter from './routes/booking.js';
 
 
 const app=express();
@@ -28,6 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 //api routes
 app.get('/',(req,res)=>res.send('Server is Live!'));
 app.use('/api/user',userRouter);
-
+app.use('/api/show',showRouter);
+app.use('/api/booking',bookingRouter);
 
 app.listen(port,()=>console.log('Server started at',port));

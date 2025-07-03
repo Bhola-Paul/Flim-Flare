@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import NavBar from './components/NavBar'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
@@ -17,11 +17,14 @@ import ListShows from './pages/Admin/ListShows'
 import AiAssitance from './pages/AiAssitance'
 import LoginPage from './pages/LoginPage'
 import ResetPassword from './pages/ResetPassword'
+import { AppContent } from './context/AppContext'
 
 function App() {
+  const {userData,backendUrl,setUserData,isLoggedin,setIsLoggedin} = useContext(AppContent);
   const isAdminRoute = useLocation().pathname.startsWith('/admin');
   const isLoginRoute=useLocation().pathname.startsWith('/login');
   const isResetPasswordRoute=useLocation().pathname.startsWith('/reset-password');
+  
   return (
     <>
       <Toaster />
