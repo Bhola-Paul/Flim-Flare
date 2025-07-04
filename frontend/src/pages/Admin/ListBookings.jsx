@@ -3,14 +3,27 @@ import { dummyBookingData } from '../../assets/assets';
 import Loading from '../../components/Loading';
 import AdminTitle from '../../components/Admin/AdminTitle';
 import { dateFormat } from '../../lib/dateFormat';
+import { useContext } from 'react';
+import { AppContent } from '../../context/AppContext';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 function ListBookings() {
   const currency = import.meta.env.VITE_CURRENCY;
+  const {backendUrl,userDta,isLoggedin,isAdmin}=useContext(AppContent);
   const [bookings, setBookings] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const fetchBookingData = () => {
-    setBookings(dummyBookingData);
-    setIsLoading(false)
+  const fetchBookingData = async() => {
+    try {
+      const {data}=await axios.get(backendUrl+'/api/admin/all-bookings');
+      if(data.success){
+        setBookings(data.bookings);
+        setIsLoading(false);
+        toast.success('Booking Data fetched Successfully');
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   }
   useEffect(() => {
     fetchBookingData();

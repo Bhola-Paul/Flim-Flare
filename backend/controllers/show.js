@@ -26,6 +26,8 @@ export const getNowPlayingMovies = async (req, res) => {
 export const addShow = async (req, res) => {
     try {
         const { movieId, dateTime, price } = req.body;
+        // console.log(movieId,dateTime,price);
+        
         if (!movieId || !dateTime || !price) {
             return res.json({
                 success: false,

@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import transporter from "../configs/nodemailer.js";
 import { text } from "express";
+import Booking from "../models/booking.js";
 
 
 // new user registration
@@ -264,8 +265,8 @@ export const sendResetOtp = async (req, res) => {
 //reset user password
 export const resetPassword = async (req, res) => {
     const { email, otp, newPassword } = req.body;
-    console.log(email,otp,newPassword);
-    
+    console.log(email, otp, newPassword);
+
     if (!email || !otp || !newPassword) {
         return res.json({
             success: false,
@@ -320,7 +321,7 @@ export const getUserData = async (req, res) => {
         })
     }
     try {
-        const user =await User.findById(userId);
+        const user = await User.findById(userId);
         if (!user) {
             return res.json({
                 success: false,
@@ -329,16 +330,94 @@ export const getUserData = async (req, res) => {
         }
         return res.json({
             success: true,
-            userData:{
-                name:user.name,
-                email:user.email,
-                isAccountVerified:user.isAccountVerified,
+            userData: {
+                name: user.name,
+                email: user.email,
+                isAccountVerified: user.isAccountVerified,
             }
         })
     } catch (error) {
         return res.json({
             success: false,
             message: error.message,
+        })
+    }
+}
+
+//get user bookings
+export const getUserBookings = async (req, res) => {
+    try {
+        const { userId } = req.body;
+        const bookings = await Booking.find({ userId }).populate({
+            path: "show",
+            populate: {
+                path: "movie"
+            }
+        }).sort({ createdAt: -1 });
+        res.json({
+            success: true,
+            bookings
+        })
+
+    } catch (error) {
+        res.json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+//get favorite movies
+export const toggleFavorite = async (req, res) => {
+    try {
+        const { userId, movieId } = req.body;
+        if (!userId || !movieId) {
+            return res.json({
+                success: false,
+                message: 'Not found'
+            })
+        }
+        const user=await User.findById(userId);
+        if(!user){
+            return res.json({
+                success: false,
+                message: 'User not found'
+            })
+        }
+        const alreadyInFavorites = user.favorite.includes(movieId);
+        if(!alreadyInFavorites){
+            user.favorite.push(movieId);
+        }
+        else{
+            user.favorite = user.favorite.filter(id => id !== movieId);
+        }
+        await user.save();
+        return res.json({
+            success:true,
+            message:alreadyInFavorites ? 'Removed From Favorites': 'Added to Favorites'
+        })
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+//get favorite movies
+export const getFavorite=async (req,res) => {
+    try {
+        const {userId}=req.body;
+        const user=await User.findById(userId).populate('favorite')
+        const favorites=user.favorite;
+        res.json({
+            success:true,
+            favorites,
+        })
+    } catch (error) {
+        return res.json({
+            success:false,
+            error:error.message
         })
     }
 }

@@ -3,37 +3,39 @@ import { dummyShowsData } from '../../assets/assets';
 import Loading from '../../components/Loading';
 import AdminTitle from '../../components/Admin/AdminTitle';
 import { dateFormat } from '../../lib/dateFormat';
+import toast from 'react-hot-toast';
+import { useContext } from 'react';
+import { AppContent } from '../../context/AppContext';
+import axios from 'axios';
 
 function ListShows() {
   const currency=import.meta.env.VITE_CURRENCY
+  const {backendUrl,isAdmin,isLoggedin,userData}=useContext(AppContent);
   const [shows,setShows]=useState([]);
-  const [loading,setLoading]=useState(true);
+  const [loading,setLoading]=useState(false);
 
   const getAllShows=async () => {
     try {
-      setShows(
-        [
-          {
-            movie : dummyShowsData[0],
-            showDateTime: "2025-06-30T02:30:00.000Z",
-            showPrice:59,
-            occupiedSeats:{
-              A1:"user_1",
-              B1: "user_2",
-              C1: 'user_3'
-            }
-          }
-        ]
-      )
-      setLoading(false);
+      const {data}=await axios.get(backendUrl+'/api/admin/all-shows');
+      console.log(data);
+      
+      if(data.success){
+        setShows(data.shows);
+        setLoading(false);
+        toast.success('Shows fetched successfully')
+      }
     } catch (error) {
-      console.log(error);
+      toast.error(error.message);
     }
   }
    
   useEffect(()=>{
-    getAllShows()
-  },[])
+    console.log(isAdmin ,isLoggedin);
+    
+    if(isAdmin && isLoggedin){
+      getAllShows()
+    }
+  },[userData]);
 
   return !loading ?(
     <>

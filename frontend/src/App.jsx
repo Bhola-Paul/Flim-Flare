@@ -20,7 +20,7 @@ import ResetPassword from './pages/ResetPassword'
 import { AppContent } from './context/AppContext'
 
 function App() {
-  const {userData,backendUrl,setUserData,isLoggedin,setIsLoggedin} = useContext(AppContent);
+  const {userData,backendUrl,setUserData,isLoggedin,setIsLoggedin,isAdmin} = useContext(AppContent);
   const isAdminRoute = useLocation().pathname.startsWith('/admin');
   const isLoginRoute=useLocation().pathname.startsWith('/login');
   const isResetPasswordRoute=useLocation().pathname.startsWith('/reset-password');

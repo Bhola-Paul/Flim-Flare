@@ -5,9 +5,14 @@ import Loading from '../../components/Loading';
 import AdminTitle from '../../components/Admin/AdminTitle';
 import BlurCircle from '../../components/BlurCircle';
 import { dateFormat } from '../../lib/dateFormat';
+import toast from 'react-hot-toast';
+import axios from 'axios';
+import { useContext } from 'react';
+import { AppContent } from '../../context/AppContext';
 
 function DashBoard() {
   const currency=import.meta.env.VITE_CURRENCY
+  const {backendUrl,baseUrl,isLoggedin,isAdmin,userData}=useContext(AppContent);
   const [dashboardData,setDashboardData]=useState({
     totalBookings:0,
     totalRevenue:0,
@@ -22,12 +27,26 @@ function DashBoard() {
     {title:"Total Users",value: dashboardData.totalUser || '0', icon:UsersIcon},
   ]
   const fetchDashBoardData=async () => {
-    setDashboardData(dummyDashboardData);
+    try {
+      setLoading(true);
+      const {data}=await axios.get(backendUrl+'/api/admin/dashboard');
+      if(data.success){
+        setDashboardData(data.dashboardData);
+        toast.success('Dashboard Data fetched Successfully')
+      }
+      else{
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
     setLoading(false);
   }
   useEffect(()=>{
-    fetchDashBoardData();
-  },[])
+    if(isLoggedin && isAdmin){
+      fetchDashBoardData();
+    }
+  },[userData])
   return !loading ? (
     <>
       <AdminTitle text1="Admin" text2="Dashboard"/>
@@ -53,7 +72,7 @@ function DashBoard() {
           {
             dashboardData.activeShows.map((show)=>(
               <div key={show._id} className='w-55 rounded-lg overflow-hidden h-full pb-3 bg-primary/10 border border-primary/20 hover:translate-y-1 hover:shadow-[0_4px_24px_rgba(139,92,246,0.5)]  transition duration-300'>
-                <img src={show.movie.poster_path} alt="" className='h-60 w-full object-cover'/>
+                <img src={baseUrl+show.movie.poster_path} alt="" className='h-60 w-full object-cover'/>
                 <p className='font-medium p-2 truncate'>{show.movie.title}</p>
                 <div className='flex items-center justify-between px-2'>
                   <p className='text-lg font-medium'>

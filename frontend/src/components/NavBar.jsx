@@ -48,7 +48,7 @@ function NavBar() {
         <Link to="/" onClick={()=>{scrollTo(0,0);setIsOpen(!isOpen)}} className='text-sm'>Releases</Link>
         <Link to="/my-bookings" onClick={()=>{scrollTo(0,0);setIsOpen(!isOpen)}} className='text-sm'>Bookings</Link>
         <Link to="/ask-ai" onClick={()=>{scrollTo(0,0);setIsOpen(!isOpen)}} className='flex items-center gap-1'>
-          <SearchIcon className='color-primary w-4 h-4 ' strokeWidth={2}/>
+          <SearchIcon className='color-primary w-4 h-4 mb-1' strokeWidth={2}/>
           <p className='text-sm font-semi-bold text-white md:hidden lg:block'><span className='text-yellow-400'>AI</span> Assist</p>
         </Link>
       </div>

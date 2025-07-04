@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppContent } from '../context/AppContext';
 import axios from 'axios'
 import toast from 'react-hot-toast';
+import SplashCursor from '../components/SplashCursor';
 
 function LoginPage() {
     const [state, setState] = useState("login");
@@ -49,7 +50,8 @@ function LoginPage() {
     }
     return (
         <div className='px-6 md:px-16 lg:px-40 h-[100vh] flex items-center justify-center'>
-            <form onSubmit={onSubmitHandler} className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] rounded-lg bg-white text-black">
+            {/* <SplashCursor/> */}
+            <form onSubmit={onSubmitHandler} className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] rounded-lg bg-white text-black border border-gray-700 shadow-lg shadow-primary">
 
                 <div className='flex gap-6'>
                     <img src='/catLogo.svg' alt="" className='w-auto h-6' />

@@ -13,9 +13,9 @@ if (!PUBLISHABLE_KEY) {
 }
 
 createRoot(document.getElementById('root')).render(
+      <BrowserRouter>
       <AppContextProvider>
-        <BrowserRouter>
         <App />
-      </BrowserRouter>
       </AppContextProvider>
+      </BrowserRouter>
 )
