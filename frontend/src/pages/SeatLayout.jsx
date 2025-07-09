@@ -13,10 +13,11 @@ import { AppContent } from '../context/AppContext';
 function SeatLayout() {
   const groupRows = [["A", "B"], ["C", "D"], ["E", "F"], ["G", "H"], ["I", "J"]]
   const { id, date } = useParams();
-  const {backendUrl}=useContext(AppContent);
+  const {backendUrl,userData}=useContext(AppContent);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [selectedTime, setSelectedTime] = useState(null);
   const [show, setShow] = useState(null);
+  const [occupiedSeats,setOccupiedSeats]=useState([]);
   const navigate = useNavigate();
   const getShow = async () => {
     try {
@@ -31,11 +32,21 @@ function SeatLayout() {
   }
   const handleBooking=async () => {
     try {
-      const {data}=await axios.post(backendUrl+'/api/booking/create',{showId:id,selectedSeats});
-      console.log(data);
+      if(!userData) {
+        return toast('Please Login first');
+      }
+      if(!selectedTime){
+        return toast('Please Select the time first');
+      }
+      if(selectedSeats.length<1){
+        return toast('Please Select at least 1 seat');
+      }
+      const {data}=await axios.post(backendUrl+'/api/booking/create',{showId:selectedTime.showId,selectedSeats});
+      // console.log(data);
       if(data.success){
         toast.success(data.message);
         navigate('/my-bookings');
+        setSelectedSeats([]);
       }
       else{
         toast.error(data.message);
@@ -44,23 +55,45 @@ function SeatLayout() {
       toast(error.message);
     }
   }
+
+
   const handleSeatClick = (seatId) => {
     if (!selectedTime) {
       return toast('Please select the time first')
+    }
+    if(occupiedSeats.includes(seatId)){
+      return toast('This seat is already booked')
     }
     if (!selectedSeats.includes(seatId) && selectedSeats.length > 4) {
       return toast('You can select only 5 seats')
     }
     setSelectedSeats(prev => prev.includes(seatId) ? prev.filter(seat => seat != seatId) : [...prev, seatId])
   }
+
+  const getBookedSeats=async () => {
+    try {
+      // console.log(selectedTime.showId);
+      
+      const {data}=await axios.post(backendUrl+`/api/booking/seats/${selectedTime.showId}`);
+      if(data.success){
+        setOccupiedSeats(data.occupiedSeats);
+      }
+      else{
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
+
   const renderSeats = (row, count = 9) => (
     <div key={row} className='flex gap-2 mt-2'>
       {/* <SplashCursor/> */}
       <div className='flex flex-wrap items-center justify-center gap-2'>
         {Array.from({ length: count }, (_, i) => {
-          const seatId = `${row} ${i + 1}`;
+          const seatId = `${row}${i + 1}`;
           return (
-            <button key={seatId} onClick={() => handleSeatClick(seatId)} className={`h-8 w-8 rounded border border-primary/60 cursor-pointer ${selectedSeats.includes(seatId) && 'bg-primary text-white'}`}>
+            <button key={seatId} onClick={() => handleSeatClick(seatId)} className={`h-8 w-8 rounded border border-primary/60 cursor-pointer ${selectedSeats.includes(seatId) && 'bg-primary text-white'} ${occupiedSeats.includes(seatId) && 'opacity-70'}`}>
               {seatId}
             </button>
           )
@@ -70,7 +103,13 @@ function SeatLayout() {
   )
   useEffect(() => {
     getShow();
-  }, [])
+  }, []);
+
+  useEffect(()=>{
+    if(selectedTime){
+      getBookedSeats();
+    }
+  },[selectedTime]);
   return show ? (
     <div className='flex flex-col md:flex-row px-6 md:px-16 lg:px-40 py-30 md:pt-50' >
       {/* timing */}
@@ -92,7 +131,7 @@ function SeatLayout() {
         <BlurCircle top='-100px' left='-100px' />
         <BlurCircle bottom='0px' right='0px' />
         <h1 className='text-2xl font-medium mb-4'>Select your seat</h1>
-        {/* <img src={assets.screenImage} alt="" /> */}
+        <div className='bg-primary w-2xs h-0.5 mb-2 '></div>
         <p>Screen Side</p>
         <div className='flex flex-col items-center mt-10 text-xs text-gray-300'>
           <div className='grid grid-cols-2 md:grid-cols-1 gap-8 md:gap-2 mb-6'>

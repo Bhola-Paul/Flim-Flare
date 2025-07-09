@@ -67,8 +67,13 @@ export const createBooking = async (req, res) => {
 export const getOccupiedSeats=async (req,res) => {
     try {
         const {showId}=req.params;
+        // console.log(showId);
         const showData=await Show.findById(showId);
+        // console.log(showData);
+        
         const occupiedSeats=Object.keys(showData.occupiedSeats);
+        // console.log(occupiedSeats);
+        
         return res.json({
             success: true,
             occupiedSeats

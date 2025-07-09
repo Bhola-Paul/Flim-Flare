@@ -5,6 +5,6 @@ import userAuth from '../middleswares/userAuth.js';
 const bookingRouter=express.Router();
 
 bookingRouter.post('/create',userAuth,createBooking);
-bookingRouter.get('/seats/:showId',userAuth,getOccupiedSeats);
+bookingRouter.post('/seats/:showId',getOccupiedSeats);
 
 export default bookingRouter;
