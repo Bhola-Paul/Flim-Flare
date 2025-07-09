@@ -348,12 +348,15 @@ export const getUserData = async (req, res) => {
 export const getUserBookings = async (req, res) => {
     try {
         const { userId } = req.body;
-        const bookings = await Booking.find({ userId }).populate({
+        const bookings = await Booking.find({ user:userId }).populate({
             path: "show",
             populate: {
                 path: "movie"
             }
         }).sort({ createdAt: -1 });
+        // console.log(userId);
+        // console.log(bookings);
+        
         res.json({
             success: true,
             bookings

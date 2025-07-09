@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { assets, dummyDateTimeData, dummyShowsData } from '../assets/assets';
 import Loading from '../components/Loading';
@@ -7,21 +7,41 @@ import isoTimeFormat from '../lib/isoTimeFormat';
 import BlurCircle from '../components/BlurCircle';
 import toast from 'react-hot-toast';
 import SplashCursor from '../components/SplashCursor';
+import axios from 'axios';
+import { AppContent } from '../context/AppContext';
 
 function SeatLayout() {
   const groupRows = [["A", "B"], ["C", "D"], ["E", "F"], ["G", "H"], ["I", "J"]]
   const { id, date } = useParams();
+  const {backendUrl}=useContext(AppContent);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [selectedTime, setSelectedTime] = useState(null);
   const [show, setShow] = useState(null);
   const navigate = useNavigate();
   const getShow = async () => {
-    const show = dummyShowsData.find(show => show._id === id);
-    if (show) {
-      setShow({
-        movie: show,
-        dateTime: dummyDateTimeData
-      })
+    try {
+      const {data}=await axios(backendUrl+`/api/show/${id}`);
+      if(data.success){
+        setShow(data.show);
+      }
+    } catch (error) {
+      toast(error.message);
+    }
+
+  }
+  const handleBooking=async () => {
+    try {
+      const {data}=await axios.post(backendUrl+'/api/booking/create',{showId:id,selectedSeats});
+      console.log(data);
+      if(data.success){
+        toast.success(data.message);
+        navigate('/my-bookings');
+      }
+      else{
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast(error.message);
     }
   }
   const handleSeatClick = (seatId) => {
@@ -50,7 +70,6 @@ function SeatLayout() {
   )
   useEffect(() => {
     getShow();
-    console.log(selectedSeats);
   }, [])
   return show ? (
     <div className='flex flex-col md:flex-row px-6 md:px-16 lg:px-40 py-30 md:pt-50' >
@@ -73,7 +92,7 @@ function SeatLayout() {
         <BlurCircle top='-100px' left='-100px' />
         <BlurCircle bottom='0px' right='0px' />
         <h1 className='text-2xl font-medium mb-4'>Select your seat</h1>
-        <img src={assets.screenImage} alt="" />
+        {/* <img src={assets.screenImage} alt="" /> */}
         <p>Screen Side</p>
         <div className='flex flex-col items-center mt-10 text-xs text-gray-300'>
           <div className='grid grid-cols-2 md:grid-cols-1 gap-8 md:gap-2 mb-6'>
@@ -89,7 +108,7 @@ function SeatLayout() {
             }
           </div>
         </div>
-        <button onClick={()=>navigate('/my-bookings')} className='flex items-center gap-1 mt-20 px-10 py-3 text-sm bg-primary hover:bg-primary-dull transition rounded-full font-medium cursor-pointer active:scale-90'>
+        <button onClick={handleBooking} className='flex items-center gap-1 mt-20 px-10 py-3 text-sm bg-primary hover:bg-primary-dull transition rounded-full font-medium cursor-pointer active:scale-90'>
           Proceed to Checkout
           <ArrowRightIcon strokeWidth={3} className='w-4 h-4'/>
         </button>

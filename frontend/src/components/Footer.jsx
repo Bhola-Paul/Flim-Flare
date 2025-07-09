@@ -12,7 +12,7 @@ function Footer() {
             This is a personal project showcasing a movie booking experience. Inspired by real-world platforms, it demonstrates front-end and back-end integration.
           </p>
           <div className="flex items-center gap-2 mt-4">
-            <div className='flex flex-col items-center gap-2'>
+            <div className='flex flex-col items-center  gap-2'>
                 <img src="/github-mark-white.png" alt="" className='w-9 h-9' />
                 <a href="https://github.com/Bhola-Paul/Flim-Flare" className='text-sm text-gray-400 hover:scale-95 transition hover:text-white'>Click Here</a>
             </div>

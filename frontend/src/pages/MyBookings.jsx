@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { dummyBookingData } from '../assets/assets';
 import Loading from '../components/Loading';
 import BlurCircle from '../components/BlurCircle';
@@ -6,13 +6,27 @@ import timeFormat from '../lib/timeFormat';
 import isoTimeFormat from '../lib/isoTimeFormat';
 import { dateFormat } from '../lib/dateFormat';
 import SplashCursor from '../components/SplashCursor';
+import axios from 'axios';
+import { AppContent } from '../context/AppContext';
 
 function MyBookings() {
   const currency=import.meta.env.VITE_CURRENCY;
+  const {backendUrl,baseUrl}=useContext(AppContent);
   const [bookings,setBookings]=useState([]);
   const [isLoading,setLoading]=useState(true);
   const getMyBookings=async () => {
-    setBookings(dummyBookingData);
+    try {
+      const {data}=await axios.post(backendUrl+'/api/user/get-booking')
+      if(data.success){
+        setBookings(data.bookings);
+      }
+      else{
+        toast.error(data.message);
+      }
+      setLoading(false);
+    } catch (error) {
+      toast.error(error.message);
+    }
     setLoading(false);
   }
   useEffect(()=>{
@@ -30,7 +44,7 @@ function MyBookings() {
         bookings.map((item,index)=>(
           <div key={index} className='flex flex-col md:flex-row justify-between bg-primary/9 border  border-primary/20 rounded-lg mt-4 p-2 max-w-3xl'>
             <div className='flex flex-col md:flex-row'>
-              <img src={item.show.movie.poster_path} alt="" className='md:max-w-45 aspect-video h-auto object-cover object-bottom rounded'/>
+              <img src={baseUrl+item.show.movie.poster_path} alt="" className='md:max-w-45 aspect-video h-auto object-cover object-bottom rounded'/>
               <div className='flex flex-col p-4'>
                 <p className='text-lg font-semibold'>{item.show.movie.title}</p>
                 <p className='text-gray-400 text-sm'>{timeFormat(item.show.movie.runtime)}</p>

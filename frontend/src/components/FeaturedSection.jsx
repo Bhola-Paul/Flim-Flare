@@ -1,12 +1,14 @@
 import { ArrowRight } from 'lucide-react'
-import React from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import BlurCircle from './BlurCircle';
 import { dummyShowsData } from '../assets/assets';
 import MovieCard from './MovieCard';
+import { AppContent } from '../context/AppContext';
 
 function FeaturedSection() {
     const navigate=useNavigate();
+    const {shows}=useContext(AppContent);
   return (
     <div className='px-6 md:px-16 lg:px-24 xl:px-44 overflow-hidden'>
       <div className='relative flex items-center justify-between pt-10 pb-10'>
@@ -17,7 +19,7 @@ function FeaturedSection() {
         </button>
       </div>
       <div className='flex flex-wrap max-sm:justify-center gap-8 mt-8 justify-center'>
-        {dummyShowsData.slice(0,6).map((show)=>(
+        {shows.slice(0,6).map((show)=>(
             <MovieCard key={show._id} movie={show}/>
         ))}
       </div>

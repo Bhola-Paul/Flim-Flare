@@ -14,7 +14,7 @@ function Layout() {
 
   useEffect(()=>{
     fetchIsAdmin();
-  },[]);
+  },[isAdmin]);
 
 
   return isAdmin ? (
