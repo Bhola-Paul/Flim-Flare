@@ -14,7 +14,7 @@ import toast from 'react-hot-toast';
 
 function MovieDetails() {
   const { id } = useParams();
-  const {backendUrl,baseUrl,shows,favoriteMovies,fetchFavoriteMovies}=useContext(AppContent);
+  const {backendUrl,baseUrl,shows,favoriteMovies,fetchFavoriteMovies,userData}=useContext(AppContent);
   const [show, setShow] = useState(null);
   
   const navigate = useNavigate();
@@ -33,7 +33,6 @@ function MovieDetails() {
     try {
       const {data}=await axios.post(backendUrl+'/api/user/add-favorite',{movieId:id});
       if(data.success){
-        fetchFavoriteMovies();
         toast.success(data.message);
       }
       else{
@@ -46,6 +45,11 @@ function MovieDetails() {
   useEffect(() => {
     getShow();
   }, [id])
+  useEffect(()=>{
+    if(userData){
+      fetchFavoriteMovies();
+    }
+  },[userData])
   return show ? (
     <div className='px-6 md:px-16 lg:px-40 pt-30 md:pt-50'>
       {/* <SplashCursor/> */}

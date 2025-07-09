@@ -11,7 +11,7 @@ import { AppContent } from '../context/AppContext';
 
 function MyBookings() {
   const currency=import.meta.env.VITE_CURRENCY;
-  const {backendUrl,baseUrl}=useContext(AppContent);
+  const {backendUrl,baseUrl,userData}=useContext(AppContent);
   const [bookings,setBookings]=useState([]);
   const [isLoading,setLoading]=useState(true);
   const getMyBookings=async () => {
@@ -30,8 +30,10 @@ function MyBookings() {
     setLoading(false);
   }
   useEffect(()=>{
-    getMyBookings();
-  },[])
+    if(userData){
+      getMyBookings();
+    }
+  },[userData])
   return !isLoading ? (
     <div className='relative px-6 md:px-16 lg:px-40 pt-30 md:pt-40 min-h-[80vh]'>
       {/* <SplashCursor/> */}

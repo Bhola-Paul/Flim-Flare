@@ -53,6 +53,7 @@ export const createBooking = async (req, res) => {
         //stripe payment
         return res.json({
             success: true,
+            booking,
             message: 'Booked Successfully'
         })
     } catch (error) {
