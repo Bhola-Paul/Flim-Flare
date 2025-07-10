@@ -60,6 +60,8 @@ export const register = async (req, res) => {
 //user login
 export const login = async (req, res) => {
     const { email, password } = req.body;
+    // console.log(req.body);
+    
     if (!email || !password) {
         return res.json({
             success: false,

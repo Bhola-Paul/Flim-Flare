@@ -8,6 +8,7 @@ import userRouter from './routes/user.js';
 import showRouter from './routes/show.js';
 import bookingRouter from './routes/booking.js';
 import adminRouter from './routes/admin.js';
+// import searchRouter from './routes/gemini.js';
 
 
 const app=express();
@@ -34,5 +35,6 @@ app.use('/api/user',userRouter);
 app.use('/api/show',showRouter);
 app.use('/api/booking',bookingRouter);
 app.use('/api/admin',adminRouter);
+// app.use('/api/gemini',searchRouter);
 
 app.listen(port,()=>console.log('Server started at',port));

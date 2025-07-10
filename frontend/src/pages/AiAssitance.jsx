@@ -1,28 +1,58 @@
 import { BrainIcon, DotSquare, Mic, Mic2Icon, MicIcon, MicOff, SearchIcon } from 'lucide-react'
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import BlurCircle from '../components/BlurCircle'
 import { assets, dummyShowsData } from '../assets/assets';
 import MovieCard from '../components/MovieCard';
 import Loading from '../components/Loading';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import SplashCursor from '../components/SplashCursor';
+import { AppContent } from '../context/AppContext';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import {parse} from 'marked'
 
 function AiAssitance() {
+    const {backendUrl,shows}=useContext(AppContent)
     const [userSentence, setUserSentence] = useState('');
     const [recommendedMovies, setRecommendedMovies] = useState([]);
     const [loading, setLoading] = useState(false);
+    const movies = shows.map((movie) => {
+        const castNames = [];
+        const genres = [];
+        movie.casts.map((cast) => {
+            castNames.push(cast.name);
+        })
+        movie.genres.map((genre) => {
+            genres.push(genre.name);
+        })
+        return {
+            id: movie._id,
+            castNames: castNames,
+            genres: genres,
+            title:movie.title,
+        }
+    })
     
-    const handleSearch=async()=>{
-        if(!userSentence) return;
+    const handleSearch = async () => {
+        if (!userSentence) return;
         setLoading(true);
-        setRecommendedMovies(dummyShowsData);
+        console.log(userSentence);
+        console.log(movies);
+        
+        try {
+            const {data}=await axios.post(backendUrl+'/api/show/search',{movies,prompt:userSentence});
+            const response=data.content;
+            // const cleaned=response.replace(/```json|```/g, '').trim();
+            // const arr=JSON.parse(cleaned);
+            console.log(response);
+            
+        } catch (error) {
+            console.log(error);
+            
+            toast.error(error.message)
+        }
         setLoading(false);
     }
-
-    useEffect(()=>{
-        handleSearch();
-        console.log(userSentence);
-    },[]);
 
     return (
         <div className='relative my-40 mb-60 px-6 md:px-16 lg:px-40 xl:px-44 overflow-hidden min-h-[80vh] pb-5'>
@@ -44,7 +74,7 @@ function AiAssitance() {
             </div>
             {
                 loading ? <Loading /> :
-                    recommendedMovies.length>0 ? (
+                    recommendedMovies.length > 0 ? (
                         <div className='pt-10'>
                             <BlurCircle top='150px' left='0px' />
                             <BlurCircle bottom='50px' right='50px' />

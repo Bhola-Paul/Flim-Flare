@@ -1,6 +1,7 @@
 import React from 'react'
 import { assets } from '../assets/assets'
 import { GithubIcon, LinkedinIcon } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 function Footer() {
   return (
@@ -9,12 +10,12 @@ function Footer() {
         <div className="md:max-w-96">
           <img className="w-36 h-auto" src={assets.flimflare} alt="logo" />
           <p className="mt-6 text-sm">
-            This is a personal project showcasing a movie booking experience. Inspired by real-world platforms, it demonstrates front-end and back-end integration.
+            This is a personal project showcasing a movie booking experience. Inspired by real-world platforms, it demonstrates front-end and back-end along with AI-integration.
           </p>
-          <div className="flex items-center justify-center gap-2 mt-4">
+          <div className="flex items-center gap-2 mt-4">
             <div className='flex flex-col items-center gap-2'>
-                <img src="/github-mark-white.png" alt="" className='w-9 h-9' />
-                <a href="https://github.com/Bhola-Paul/Flim-Flare" className='text-sm text-gray-400 hover:scale-95 transition hover:text-white'>Click Here</a>
+                <img src="/github-mark-white.png" alt="" className='w-9 h-9 border border-primary border-4 rounded-full' />
+                <a href="https://github.com/Bhola-Paul/Flim-Flare" className='text-sm text-gray-400 hover:scale-95 transition hover:text-white'>Source Code</a>
             </div>
           </div>
         </div>
@@ -33,15 +34,18 @@ function Footer() {
             <div className="text-sm space-y-2">
               <p>+91 6909467041</p>
               <p>paulbhola1987@gmail.com</p>
-              <div className='flex gap-2'>
-                
+              <div className='flex gap-3 mt-5 '>
+                <Link to='https://www.linkedin.com/in/bhola-paul/'><img src="/linkedin.svg" alt="" className='w-6 h-6 bg-white rounded-sm'/></Link>
+                <Link><img src="/instagram.svg" alt="" className='w-6 h-6 '/></Link>
+                <Link><img src="/facebook.svg" alt="" className='w-6 h-6 bg-white rounded-sm'/></Link>
+                <Link to='https://github.com/Bhola-Paul'><img src="/github-mark-white.png" alt="" className='w-6 h-6'/></Link>
               </div>
             </div>
           </div>
         </div>
       </div>
       <p className="pt-4 text-center text-sm pb-5">
-        Copyright {new Date().getFullYear()} © Bhola Paul. All Right Reserved.
+        Copyright {new Date().getFullYear()} © Flim-Flare. All Right Reserved.
       </p>
     </footer>
   )
