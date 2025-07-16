@@ -9,14 +9,27 @@ import SplashCursor from '../components/SplashCursor';
 import { AppContent } from '../context/AppContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import {parse} from 'marked'
+import { parse } from 'marked'
 
 function AiAssitance() {
-    const {backendUrl,shows}=useContext(AppContent)
+    const { backendUrl, shows } = useContext(AppContent)
     const [userSentence, setUserSentence] = useState('');
     const [recommendedMovies, setRecommendedMovies] = useState([]);
-    const [userMovies,setUserMovies]=useState([]);
+    const [userMovies, setUserMovies] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [micOn, setMicOn] = useState(false);
+
+    const {
+        transcript,
+        listening,
+        resetTranscript,
+        browserSupportsSpeechRecognition
+    } = useSpeechRecognition();
+
+    if (!browserSupportsSpeechRecognition) {
+        return <span>Browser doesn't support speech recognition.</span>;
+    }
+
     const movies = shows.map((movie) => {
         const castNames = [];
         const genres = [];
@@ -30,38 +43,49 @@ function AiAssitance() {
             id: movie._id,
             castNames: castNames,
             genres: genres,
-            title:movie.title,
+            title: movie.title,
         }
     })
-    
+
     const handleSearch = async () => {
         if (!userSentence) return;
         setLoading(true);
-        console.log(userSentence);
-        console.log(movies);
-        
+        // console.log(userSentence);
+        // console.log(movies);
+
         try {
-            const {data}=await axios.post(backendUrl+'/api/show/search',{movies,prompt:userSentence});
-            const response=data.content;
-            // const cleaned=response.replace(/```json|```/g, '').trim();
-            // const arr=JSON.parse(cleaned);
-            const arr=response.split(', ');
+            const { data } = await axios.post(backendUrl + '/api/show/search', { movies, prompt: userSentence });
+            const response = data.content;
+            const arr = response.split(', ');
             setUserMovies(arr);
-            // console.log((response));
-            // console.log((arr));
-            userMovies.map((movie)=>(console.log(movie)))
-            
+            // userMovies.map((movie) => (console.log(movie)))
+
         } catch (error) {
             console.log(error);
-            
+
             toast.error(error.message)
         }
         setLoading(false);
     }
 
-    useEffect(()=>{
-        handleSearch();
-    },[])
+    const handleMicToggle = () => {
+        if (micOn) {
+            SpeechRecognition.stopListening();
+            setMicOn(false);
+
+            
+        } else {
+            resetTranscript();
+            SpeechRecognition.startListening({ continuous: true });
+            setMicOn(true);
+        }
+    };
+
+    useEffect(() => {
+        if (micOn) {
+            setUserSentence(transcript);
+        }
+    }, [transcript, micOn]);
 
     return (
         <div className='relative my-40 mb-60 px-6 md:px-16 lg:px-40 xl:px-44 overflow-hidden min-h-[80vh] pb-5'>
@@ -76,9 +100,12 @@ function AiAssitance() {
                 </h2>
             </div>
             <div className='flex justify-center items-center gap-2'>
-                <div className='flex flex-wrap justify-between rounded-full border border-primary/90 px-4 py-2 shadow shadow-primary'>
+                <div className='flex flex-wrap justify-between rounded-full border border-primary px-4 py-2 '>
                     <input type='text' value={userSentence} onChange={(e) => setUserSentence(e.target.value)} className='text-gray-200 text-left outline-none mr-2 md:w-100 lg:200' placeholder='what type of movie you like?' />
                     <SearchIcon onClick={handleSearch} className='w-6 h-6 hover:scale-110 transition' />
+                </div>
+                <div onClick={handleMicToggle} className='rounded-full p-1.5 border-primary border-2'>
+                    {micOn ? <MicIcon className='text-yellow-400 animate-pulse' strokeWidth={2}/> : <MicOff className='text-red-500' strokeWidth={2}/>}
                 </div>
             </div>
             {
@@ -89,8 +116,8 @@ function AiAssitance() {
                             <BlurCircle bottom='50px' right='50px' />
                             <h1 className='text-lg font-medium my-4 md:my-15'>Recommended for you</h1>
                             <div className='flex flex-wrap gap-6 flex-col justify-center'>
-                                {userMovies.map((movie,index) => (
-                                    <div key={index}>{index+1}. {movie}</div>
+                                {userMovies.map((movie, index) => (
+                                    <div key={index}>{index + 1}. {movie}</div>
                                 ))}
                             </div>
                         </div>
