@@ -15,6 +15,7 @@ function AiAssitance() {
     const {backendUrl,shows}=useContext(AppContent)
     const [userSentence, setUserSentence] = useState('');
     const [recommendedMovies, setRecommendedMovies] = useState([]);
+    const [userMovies,setUserMovies]=useState([]);
     const [loading, setLoading] = useState(false);
     const movies = shows.map((movie) => {
         const castNames = [];
@@ -44,7 +45,11 @@ function AiAssitance() {
             const response=data.content;
             // const cleaned=response.replace(/```json|```/g, '').trim();
             // const arr=JSON.parse(cleaned);
-            console.log(response);
+            const arr=response.split(', ');
+            setUserMovies(arr);
+            // console.log((response));
+            // console.log((arr));
+            userMovies.map((movie)=>(console.log(movie)))
             
         } catch (error) {
             console.log(error);
@@ -53,6 +58,10 @@ function AiAssitance() {
         }
         setLoading(false);
     }
+
+    useEffect(()=>{
+        handleSearch();
+    },[])
 
     return (
         <div className='relative my-40 mb-60 px-6 md:px-16 lg:px-40 xl:px-44 overflow-hidden min-h-[80vh] pb-5'>
@@ -74,14 +83,14 @@ function AiAssitance() {
             </div>
             {
                 loading ? <Loading /> :
-                    recommendedMovies.length > 0 ? (
+                    userMovies.length > 0 ? (
                         <div className='pt-10'>
                             <BlurCircle top='150px' left='0px' />
                             <BlurCircle bottom='50px' right='50px' />
                             <h1 className='text-lg font-medium my-4 md:my-15'>Recommended for you</h1>
-                            <div className='flex flex-wrap gap-6 max-sm:justify-center'>
-                                {recommendedMovies.map((movie) => (
-                                    <MovieCard movie={movie} key={movie._id} />
+                            <div className='flex flex-wrap gap-6 flex-col justify-center'>
+                                {userMovies.map((movie,index) => (
+                                    <div key={index}>{index+1}. {movie}</div>
                                 ))}
                             </div>
                         </div>
