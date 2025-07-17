@@ -51,17 +51,44 @@ export const search = async (req, res) => {
 
         for (const movie of arr) {
             const result = await fetchMovies(movie);
-            const userMovie={
-                title: result.title,
-                poster_path: result.poster_path,
-                backdrop_path: result.backdrop_path,
-                release_date: result.release_date,
-                original_language: result.original_language,
-                tagline: result.tagline || '',
-                vote_average: result.vote_average,
+            const movieId=result.id;
+            const [movieDetailsResponse, movieCreditsResponse] = await Promise.all([
+                axios.get(`https://api.themoviedb.org/3/movie/${movieId}`, {
+                    headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` }
+                }),
+                axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits`, {
+                    headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` }
+                })
+
+            ])
+            const movieApiData = movieDetailsResponse.data;
+            const movieCreditsData = movieCreditsResponse.data;
+            const userMovie = {
+                _id: movieId,
+                title: movieApiData.title,
+                overview: movieApiData.overview,
+                poster_path: movieApiData.poster_path,
+                backdrop_path: movieApiData.backdrop_path,
+                genres: movieApiData.genres,
+                casts: movieCreditsData.cast,
+                release_date: movieApiData.release_date,
+                original_language: movieApiData.original_language,
+                tagline: movieApiData.tagline || '',
+                vote_average: movieApiData.vote_average,
+                runtime: movieApiData.runtime,
             }
+
+
+            // const userMovie={
+            //     title: result.title,
+            //     poster_path: result.poster_path,
+            //     backdrop_path: result.backdrop_path,
+            //     release_date: result.release_date,
+            //     original_language: result.original_language,
+            //     tagline: result.tagline || '',
+            //     vote_average: result.vote_average,
+            // }
             if(userMovie && userMovie.title && userMovie.poster_path && userMovie.backdrop_path && userMovie.release_date)results.push(userMovie);
-            // results.push(result);
             await delay(300);
         }
 
