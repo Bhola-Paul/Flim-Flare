@@ -10,6 +10,7 @@ import { AppContent } from '../context/AppContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { parse } from 'marked'
+import Card from '../components/Card';
 
 function AiAssitance() {
     const { backendUrl, shows } = useContext(AppContent)
@@ -30,39 +31,38 @@ function AiAssitance() {
         return <span>Browser doesn't support speech recognition.</span>;
     }
 
-    const movies = shows.map((movie) => {
-        const castNames = [];
-        const genres = [];
-        movie.casts.map((cast) => {
-            castNames.push(cast.name);
-        })
-        movie.genres.map((genre) => {
-            genres.push(genre.name);
-        })
-        return {
-            id: movie._id,
-            castNames: castNames,
-            genres: genres,
-            title: movie.title,
-        }
-    })
+    // const movies = shows.map((movie) => {
+    //     const castNames = [];
+    //     const genres = [];
+    //     movie.casts.map((cast) => {
+    //         castNames.push(cast.name);
+    //     })
+    //     movie.genres.map((genre) => {
+    //         genres.push(genre.name);
+    //     })
+    //     return {
+    //         id: movie._id,
+    //         castNames: castNames,
+    //         genres: genres,
+    //         title: movie.title,
+    //     }
+    // })
 
     const handleSearch = async () => {
         if (!userSentence) return;
         setLoading(true);
-        // console.log(userSentence);
-        // console.log(movies);
-
+        console.log(userSentence);
         try {
-            const { data } = await axios.post(backendUrl + '/api/show/search', { movies, prompt: userSentence });
-            const response = data.content;
-            const arr = response.split(', ');
-            setUserMovies(arr);
-            // userMovies.map((movie) => (console.log(movie)))
+            const { data } = await axios.post(backendUrl + '/api/show/search', {prompt: userSentence });
+            if(data.success){
+                console.log(data.movies);
+                setUserMovies(data.movies);
+            }
+            else{
+                toast.error(data.message);
+            }
 
         } catch (error) {
-            console.log(error);
-
             toast.error(error.message)
         }
         setLoading(false);
@@ -115,17 +115,17 @@ function AiAssitance() {
                             <BlurCircle top='150px' left='0px' />
                             <BlurCircle bottom='50px' right='50px' />
                             <h1 className='text-lg font-medium my-4 md:my-15'>Recommended for you</h1>
-                            <div className='flex flex-wrap gap-6 flex-col justify-center'>
+                            <div className='flex flex-wrap gap-6  justify-center'>
                                 {userMovies.map((movie, index) => (
-                                    <div key={index}>{index + 1}. {movie}</div>
+                                    <Card movie={movie} key={index}/>
                                 ))}
                             </div>
                         </div>
-                    ) : (
+                    ) : userSentence ? (
                         <div className='mt-10'>
                             <h1 className='text-2xl text-center text-gray-400'>Oops! No movie of your choice...</h1>
                         </div>
-                    )
+                    ): ""
             }
 
         </div>

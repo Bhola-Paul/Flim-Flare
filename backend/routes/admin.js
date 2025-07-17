@@ -9,4 +9,5 @@ adminRouter.get('/dashboard',adminAuth,getDashboardData);
 adminRouter.get('/all-shows',adminAuth,getAllShows);
 adminRouter.get('/all-bookings',adminAuth,getAllBookings);
 
+
 export default adminRouter;

@@ -1,20 +1,83 @@
+import axios from "axios";
 import main from "../services/aiService.js";
+
+const api_key = 'ad9b626624981feb694911d90d8ba1b9';
+
+const delay = (ms) => new Promise(res => setTimeout(res, ms));
+
+
+const fetchMovies = async (query, retries = 3, delayMs = 500) => {
+    try {
+        const { data } = await axios.get('https://api.themoviedb.org/3/search/movie', {
+            params: {
+                include_adult: false,
+                language: 'en-US',
+                page: 1,
+                api_key,
+                query
+            },
+            timeout: 5000
+        });
+
+        if (data.results && data.results.length > 0) {
+            return data.results[0];
+        } else {
+            return { title: query, error: 'No results found' };
+        }
+    } catch (err) {
+        if (retries > 0) {
+            console.warn(`Retrying ${query} due to error: ${err.message}`);
+            await new Promise(res => setTimeout(res, delayMs));
+            return fetchMovies(query, retries - 1, delayMs);
+        }
+        return { MovieName: query, error: err.message || 'Request failed' };
+    }
+};
+
 
 export const search = async (req, res) => {
     try {
-        const { movies, prompt } = req.body;
-        // console.log(prompt);
+        const { prompt } = req.body;
+        // console.log('Hii');
+        
         const content = await main(
-            `Recommand some movies based on user prompt ${prompt}. Just names published year in bracket separated by commas. Nothing else is required.`
+            `Recommend exactly 10 movies based on user prompt "${prompt}". Just names separated by commas. Nothing else.`
         );
+
+        const arr = content.split(',').map(m => m.trim()).slice(0, 10);
+        // console.log(arr);
+        
+        const results = [];
+
+        for (const movie of arr) {
+            const result = await fetchMovies(movie);
+            const userMovie={
+                title: result.title,
+                poster_path: result.poster_path,
+                backdrop_path: result.backdrop_path,
+                release_date: result.release_date,
+                original_language: result.original_language,
+                tagline: result.tagline || '',
+                vote_average: result.vote_average,
+            }
+            if(userMovie && userMovie.title && userMovie.poster_path && userMovie.backdrop_path && userMovie.release_date)results.push(userMovie);
+            // results.push(result);
+            await delay(300);
+        }
+
+        // console.log(results);
+        
+
         return res.json({
             success: true,
-            content,
-        })
+            movieTiltle:arr,
+            movies: results
+        });
+
     } catch (error) {
-        return res.json({
+        return res.status(500).json({
             success: false,
             message: error.message
-        })
+        });
     }
-}
+};

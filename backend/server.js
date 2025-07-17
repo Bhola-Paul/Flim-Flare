@@ -8,7 +8,6 @@ import userRouter from './routes/user.js';
 import showRouter from './routes/show.js';
 import bookingRouter from './routes/booking.js';
 import adminRouter from './routes/admin.js';
-// import searchRouter from './routes/gemini.js';
 
 
 const app=express();
