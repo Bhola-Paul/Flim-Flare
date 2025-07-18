@@ -77,7 +77,8 @@ export const createBooking = async (req, res) => {
             expires_at: Math.floor(Date.now()/1000)+30*60,
         })
 
-        booking.paymentLink=session.url
+        booking.paymentLink="";
+        booking.isPaid=true;
         await booking.save();
 
 

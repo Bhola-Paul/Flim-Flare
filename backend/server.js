@@ -18,7 +18,7 @@ const allowedOrigins=['http://localhost:5173']
 await connectDB();
 
 //stripe webhook
-app.post('/api/stripe',express.raw({type: 'application/json'}), stripeWebhooks);
+app.use('/api/stripe',express.raw({type: 'application/json'}), stripeWebhooks);
 
 
 //middleware
