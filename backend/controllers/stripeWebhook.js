@@ -2,6 +2,8 @@ import stripe from 'stripe'
 import Booking from '../models/booking.js';
 
 export const stripeWebhooks=async (req,res) => {
+    console.log('Hello');
+    
     const stripeInstance=new stripe(process.env.STRIPE_SECRET_KEY);
     const sig=req.headers["stripe-signature"];
     let event;
@@ -11,6 +13,8 @@ export const stripeWebhooks=async (req,res) => {
         return  res.status(400).send(`Webhook error: ${error.message}`);
     }
     try {
+        console.log(event.type);
+        
         switch (event.type) {
             case "payment_intent_succeeded":{
                 const paymentIntent=event.data.object
