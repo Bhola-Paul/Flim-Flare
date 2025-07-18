@@ -8,6 +8,7 @@ import userRouter from './routes/user.js';
 import showRouter from './routes/show.js';
 import bookingRouter from './routes/booking.js';
 import adminRouter from './routes/admin.js';
+import { stripeWebhooks } from './controllers/stripeWebhook.js';
 
 
 const app=express();
@@ -16,11 +17,13 @@ const allowedOrigins=['http://localhost:5173']
 
 await connectDB();
 
+//stripe webhook
+app.use('/api/stripe',express.raw({type: 'application/json'}), stripeWebhooks)
+
 //middleware
 app.use(express.json());
 app.use(cors({
-    origin:'*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    origin:allowedOrigins,
     credentials:true,
 }));
 app.use(cookieParser());
