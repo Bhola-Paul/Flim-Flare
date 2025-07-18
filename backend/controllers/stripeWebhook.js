@@ -23,7 +23,6 @@ export const stripeWebhooks=async (req,res) => {
                     isPaid:true,
                     paymentLink: ""
                 });
-                Booking.save()
                 break;
             }
             default:
