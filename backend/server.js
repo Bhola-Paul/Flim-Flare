@@ -19,7 +19,8 @@ await connectDB();
 //middleware
 app.use(express.json());
 app.use(cors({
-    origin:allowedOrigins,
+    origin:'*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials:true,
 }));
 app.use(cookieParser());
