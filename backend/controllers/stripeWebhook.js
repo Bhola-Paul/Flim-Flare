@@ -1,16 +1,16 @@
 import stripe from 'stripe'
 import Booking from '../models/booking.js';
 
-export const stripeWebhooks=async (req,res) => {
+export const stripeWebhooks=async (request,response) => {
     console.log('Hello');
     
     const stripeInstance=new stripe(process.env.STRIPE_SECRET_KEY);
-    const sig=req.headers["stripe-signature"];
+    const sig=request.headers["stripe-signature"];
     let event;
     try {
-        event=stripeInstance.webhooks.constructEvent(req.body,sig,process.env.STRIPE_WEBHOOK_SECRET);
+        event=stripeInstance.webhooks.constructEvent(request.body,sig,process.env.STRIPE_WEBHOOK_SECRET);
     } catch (error) {
-        return  res.status(400).send(`Webhook error: ${error.message}`);
+        return  response.status(400).send(`Webhook error: ${error.message}`);
     }
     try {
         console.log(event.type);
@@ -33,11 +33,11 @@ export const stripeWebhooks=async (req,res) => {
                 console.log('Unhandled error',event.type);
                 break;
         }
-        res.json({
+        response.json({
             recieved:true
         })
     } catch (error) {
         console.log("Webhook processing error",error);
-        res.status(500).send("Internal Server Error");
+        response.status(500).send("Internal Server Error");
     }
 }
