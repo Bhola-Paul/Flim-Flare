@@ -80,8 +80,7 @@ export const createBooking = async (req, res) => {
         booking.paymentLink="";
         booking.isPaid=true;
         await booking.save();
-
-
+        
         return res.json({
             success: true,
             url:session.url
