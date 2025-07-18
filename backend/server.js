@@ -23,10 +23,7 @@ app.use('/api/stripe',express.raw({type: 'application/json'}), stripeWebhooks);
 
 //middleware
 app.use(express.json());
-app.use(cors({
-    origin:'*',
-    credentials:true,
-}));
+app.use(cors());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
