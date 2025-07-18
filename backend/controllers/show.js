@@ -1,13 +1,22 @@
 import axios from "axios";
 import Movie from "../models/movie.js";
 import Show from "../models/show.js";
+import axiosRetry from 'axios-retry';
 
+axiosRetry(axios, {
+    retries: 3,
+    retryDelay: axiosRetry.exponentialDelay,
+    retryCondition: (error) => {
+        return axiosRetry.isNetworkOrIdempotentRequestError(error) || error.code === 'ECONNRESET';
+    },
+});
 
 //get all movies from TMDB 
 export const getNowPlayingMovies = async (req, res) => {
     try {
         const { data } = await axios.get('https://api.themoviedb.org/3/movie/now_playing', {
-            headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` }
+            headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` },
+            timeout: 5000
         });
         const movies = data.results;
         res.json({
@@ -38,10 +47,12 @@ export const addShow = async (req, res) => {
         if (!movie) {
             const [movieDetailsResponse, movieCreditsResponse] = await Promise.all([
                 axios.get(`https://api.themoviedb.org/3/movie/${movieId}`, {
-                    headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` }
+                    headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` },
+                    timeout: 5000
                 }),
                 axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits`, {
-                    headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` }
+                    headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` },
+                    timeout: 5000
                 })
 
             ])

@@ -49,7 +49,7 @@ function MovieDetails() {
     if(userData){
       fetchFavoriteMovies();
     }
-  },[userData])
+  },[userData,favoriteMovies])
   return show ? (
     <div className='px-6 md:px-16 lg:px-40 pt-30 md:pt-50'>
       {/* <SplashCursor/> */}
