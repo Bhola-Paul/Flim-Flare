@@ -44,9 +44,7 @@ function SeatLayout() {
       const {data}=await axios.post(backendUrl+'/api/booking/create',{showId:selectedTime.showId,selectedSeats});
       // console.log(data);
       if(data.success){
-        toast.success(data.message);
-        navigate('/my-bookings');
-        setSelectedSeats([]);
+        window.location.href=data.url;
       }
       else{
         toast.error(data.message);

@@ -18,6 +18,7 @@ import AiAssitance from './pages/AiAssitance'
 import LoginPage from './pages/LoginPage'
 import ResetPassword from './pages/ResetPassword'
 import { AppContent } from './context/AppContext'
+import Loading from './components/Loading'
 
 function App() {
   const {userData,backendUrl,setUserData,isLoggedin,setIsLoggedin,isAdmin} = useContext(AppContent);
@@ -37,6 +38,7 @@ function App() {
         <Route path='/movies/:id' element={<MovieDetails />} />
         <Route path='/movies/:id/:date' element={<SeatLayout />} />
         <Route path='/my-bookings' element={<MyBookings />} />
+        <Route path='/loading/:nextUrl' element={<Loading />} />
         <Route path='/favorite' element={<Favorite />} />
         <Route path='/ask-ai' element={<AiAssitance/>}/>
         <Route path='/admin/*' element={<Layout />}>
