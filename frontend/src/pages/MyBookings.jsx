@@ -9,6 +9,7 @@ import SplashCursor from '../components/SplashCursor';
 import axios from 'axios';
 import { AppContent } from '../context/AppContext';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 function MyBookings() {
   const currency=import.meta.env.VITE_CURRENCY;
@@ -19,6 +20,7 @@ function MyBookings() {
     try {
       const {data}=await axios.post(backendUrl+'/api/user/get-booking')
       if(data.success){
+        toast.success('Booking data fetched successfully')
         setBookings(data.bookings);
       }
       else{
