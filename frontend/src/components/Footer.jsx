@@ -36,8 +36,8 @@ function Footer() {
               <p>paulbhola1987@gmail.com</p>
               <div className='flex gap-3 mt-5 '>
                 <Link to='https://www.linkedin.com/in/bhola-paul/'><img src="/linkedin.svg" alt="" className='w-6 h-6 bg-white rounded-sm'/></Link>
-                <Link><img src="/instagram.svg" alt="" className='w-6 h-6 '/></Link>
-                <Link><img src="/facebook.svg" alt="" className='w-6 h-6 bg-white rounded-sm'/></Link>
+                <Link to='https://www.instagram.com/bhola_paul04?igsh=MXI1ZTZpaWc5eHVncA=='><img src="/instagram.svg" alt="" className='w-6 h-6 '/></Link>
+                <Link to='https://www.facebook.com/share/179UGQrXss/'><img src="/facebook.svg" alt="" className='w-6 h-6 bg-white rounded-sm'/></Link>
                 <Link to='https://github.com/Bhola-Paul'><img src="/github-mark-white.png" alt="" className='w-6 h-6'/></Link>
               </div>
             </div>
