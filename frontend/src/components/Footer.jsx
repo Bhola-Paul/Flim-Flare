@@ -35,10 +35,10 @@ function Footer() {
               <p>+91 6909467041</p>
               <p>paulbhola1987@gmail.com</p>
               <div className='flex gap-3 mt-5 '>
-                <Link to='https://www.linkedin.com/in/bhola-paul/'><img src="/linkedin.svg" alt="" className='w-6 h-6 bg-white rounded-sm'/></Link>
-                <Link to='https://www.instagram.com/bhola_paul04?igsh=MXI1ZTZpaWc5eHVncA=='><img src="/instagram.svg" alt="" className='w-6 h-6 '/></Link>
-                <Link to='https://www.facebook.com/share/179UGQrXss/'><img src="/facebook.svg" alt="" className='w-6 h-6 bg-white rounded-sm'/></Link>
-                <Link to='https://github.com/Bhola-Paul'><img src="/github-mark-white.png" alt="" className='w-6 h-6'/></Link>
+                <Link to='https://www.linkedin.com/in/souvik-khanra-202665254/'><img src="/linkedin.svg" alt="" className='w-6 h-6 bg-white rounded-sm'/></Link>
+                <Link to='https://www.instagram.com/_yehi_to_hai_/'><img src="/instagram.svg" alt="" className='w-6 h-6 '/></Link>
+                <Link to='https://www.facebook.com/profile.php?id=100084802717500'><img src="/facebook.svg" alt="" className='w-6 h-6 bg-white rounded-sm'/></Link>
+                <Link to='https://github.com/SOUVIK4075'><img src="/github-mark-white.png" alt="" className='w-6 h-6'/></Link>
               </div>
             </div>
           </div>

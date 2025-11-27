@@ -5,8 +5,8 @@ import { NavLink } from 'react-router-dom'
 
 function AdminSidebar() {
     const user = {
-        firstName: 'Bhola',
-        lastName: 'Paul',
+        firstName: 'Souvik',
+        lastName: 'Khanra',
         imageUrl: assets.profile
     }
     const adminLinks = [
