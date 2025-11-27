@@ -1,6 +1,6 @@
 # 🎬 Flim-Flare
 
-> A modern, responsive full-stack MERN (MongoDB, Express, React, Node.js) project for movie recommendation and ticket booking.
+> A modern, responsive full-stack MERN (MongoDB, Express, React, Node.js) project for movie recommendation and ticket booking experience.
 
 ---
 
