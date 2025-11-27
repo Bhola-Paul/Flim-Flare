@@ -19,7 +19,7 @@ function Favorite() {
         toast.success('Favorites fetched Successfully');
       }
       else{
-        toast.error
+        toast.error('Can not fetch favorite movies!');
       }
     } catch (error) {
       toast.error(error.message);
