@@ -15,7 +15,7 @@ function Footer() {
           <div className="flex items-center gap-2 mt-4">
             <div className='flex flex-col items-center gap-2'>
                 <img src="/github-mark-white.png" alt="" className='w-9 h-9 border border-primary border-4 rounded-full' />
-                <a href="https://github.com/Bhola-Paul/Flim-Flare" className='text-sm text-gray-400 hover:scale-95 transition hover:text-white'>Source Code</a>
+                <a href="https://github.com/SOUVIK4075/Flim_Flare" className='text-sm text-gray-400 hover:scale-95 transition hover:text-white'>Source Code</a>
             </div>
           </div>
         </div>
