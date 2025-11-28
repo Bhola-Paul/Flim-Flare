@@ -32,8 +32,8 @@ function Footer() {
           <div>
             <h2 className="font-semibold mb-5">Get in touch</h2>
             <div className="text-sm space-y-2">
-              <p>+91 6909467041</p>
-              <p>paulbhola1987@gmail.com</p>
+              <p>+91 8101266206</p>
+              <p>khanrasouvik112@gmail.com</p>
               <div className='flex gap-3 mt-5 '>
                 <Link to='https://www.linkedin.com/in/souvik-khanra-202665254/'><img src="/linkedin.svg" alt="" className='w-6 h-6 bg-white rounded-sm'/></Link>
                 <Link to='https://www.instagram.com/_yehi_to_hai_/'><img src="/instagram.svg" alt="" className='w-6 h-6 '/></Link>
